@@ -1,5 +1,6 @@
 import { NodeSSH } from "node-ssh"
 import { readFile, stat } from "node:fs/promises"
+import { homedir } from "node:os"
 import z from "zod"
 /**
   * @import { rudaYmlEnvironmentSchema } from "./config.mjs"
@@ -9,15 +10,17 @@ import z from "zod"
   * @param {z.infer<typeof rudaYmlEnvironmentSchema>} env
   */
 export async function getSshConnection(env) {
-  if (!(await stat(env.sshKeyPath)).isFile()) {
+  const p = untildify(env.keyPath)
+
+  if (!(await stat(p)).isFile()) {
     console.error('ssh key file not found')
     process.exit(1)
   }
-  const sshKey = await readFile(env.sshKeyPath, 'utf8')
+  const sshKey = await readFile(p, 'utf8')
   try {
     return await new NodeSSH().connect({
-      host: env.ssh,
-      username: 'kx',
+      host: env.hostname,
+      username: env.username,
       privateKey: sshKey
     })
   } catch (error) {
@@ -25,4 +28,12 @@ export async function getSshConnection(env) {
     console.error(error)
     process.exit(1)
   }
+}
+
+/**
+  * @param {string} p
+  * @returns {string}
+  */
+function untildify(p) {
+  return p.replace(/^~/, homedir())
 }
