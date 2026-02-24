@@ -1,0 +1,16 @@
+{
+  "name": "ruda",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "node-ssh": "^13.2.1"
+  }
+}
