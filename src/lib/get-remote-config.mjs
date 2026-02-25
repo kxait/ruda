@@ -21,12 +21,13 @@ export async function getRemoteConfig(env, sshConnection) {
   try {
     const configParsed = parse(configText);
     if (configParsed === null) {
-      return { env: {} };
+      return { env: {}, files: {} };
     }
-    if (configParsed['env'] === null) {
-      return { env: {} };
-    }
-    return remoteConfigSchema.parse(configParsed);
+    const cfg = {
+      env: configParsed['env'] ?? {},
+      files: configParsed['files'] ?? {},
+    };
+    return remoteConfigSchema.parse(cfg);
   } catch (e) {
     console.error('error: could not parse remote config', e);
     sshConnection.dispose();

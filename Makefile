@@ -24,3 +24,6 @@ set-e:
 
 set-all:
 	RUDA_YML=_test_dir/.ruda.yml npm run start set-all _test_dir/env
+
+set-file:
+	RUDA_YML=_test_dir/.ruda.yml npm run start set-file _test_dir/file.txt remote-path/to/file.txt
