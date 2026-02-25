@@ -28,10 +28,16 @@ program
   .option('-e, --env <env-name>', 'environment name');
 program
   .command('set-all <env-file>')
+  .description(
+    'upload all variables from a file to the remote server, the file must be in .env format',
+  )
   .action(setAll)
   .option('-e, --env <env-name>', 'environment name');
 program
-  .command('set-file <local-file> <remote-path>')
+  .command('set-file <remote-path> [local-file]')
+  .description(
+    'upload a file to the remote server, if no local file is provided, the file will be removed',
+  )
   .action(setFile)
   .option('-e, --env <env-name>', 'environment name');
 program

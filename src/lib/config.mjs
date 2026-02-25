@@ -25,7 +25,10 @@ const DefaultRudaYmlPath = './.ruda.yml';
  * @typedef {z.infer<typeof rudaYmlEnvironmentSchema> & { name: string }} RudaYmlResultEnv
  *
  *
- * @typedef {z.infer<typeof rudaYmlSchema> & { hasOneEnv: boolean }} RudaYmlResult
+ * @typedef {{
+ *   environments: Record<string, RudaYmlResultEnv>;
+ *   hasOneEnv: boolean;
+ * }} RudaYmlResult
  */
 
 /** @returns {Promise<RudaYmlResult>} */

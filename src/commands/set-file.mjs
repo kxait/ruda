@@ -9,25 +9,44 @@ import { readFile, stat } from 'node:fs/promises';
 /** @import {Command} from "commander" */
 
 /**
- * <local file>
  * <remote path>
+ * [local file]
  * -e, --env <env name>
  *
  * @this {Command}
  */
 export async function setFile() {
-  const path = this.args[0];
-  const statResult = await stat(path);
-  if (!statResult.isFile()) {
-    console.error('error: file does not exist');
+  if (!this.args[1]) {
+    await del(this);
+  } else {
+    await upload(this);
+  }
+
+  console.log('done');
+}
+
+/** @param {Command} self */
+async function upload(self) {
+  const path = self.args[1];
+  const fileExists = await (async () => {
+    try {
+      const statResult = await stat(path);
+      if (!statResult.isFile()) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  })();
+  if (path && !fileExists) {
+    console.error('error: file does not exist or is a dir');
     process.exit(1);
   }
-  const fileContent = await readFile(path, 'utf8');
-  const fileSha256 = hash('sha256', fileContent);
 
   const yml = await readRudaYml();
 
-  const env = getSingleEnv(this, yml);
+  const env = getSingleEnv(self, yml);
 
   const sshConnection = await getSshConnection(env);
 
@@ -36,14 +55,49 @@ export async function setFile() {
   const config = await getRemoteConfig(env, sshConnection);
 
   const homePath = await sshConnection.exec('sh', ['-c', 'echo $HOME']);
+
+  const fileContent = await readFile(path, 'utf8');
+
+  const fileSha256 = hash('sha256', fileContent);
   const filePath = `${homePath.trim()}/ruda/${env.name}/files/${fileSha256}`;
 
   await sshConnection.putFile(path, filePath);
 
-  config.files[fileSha256] = this.args[1];
+  config.files[fileSha256] = self.args[0];
 
   await writeRemoteConfig(env, sshConnection, config);
 
   sshConnection.dispose();
-  console.log('done');
+}
+
+/** @param {Command} self */
+async function del(self) {
+  const yml = await readRudaYml();
+
+  const env = getSingleEnv(self, yml);
+
+  const sshConnection = await getSshConnection(env);
+
+  await checkEnvInitialized(env, sshConnection);
+
+  const config = await getRemoteConfig(env, sshConnection);
+
+  const homePath = await sshConnection.exec('sh', ['-c', 'echo $HOME']);
+
+  const row = Object.entries(config.files).find(([_, v]) => v === self.args[0]);
+  if (!row) {
+    console.error('error: file does not exist on remote');
+    process.exit(1);
+  }
+  const [fileSha256] = row;
+
+  const filePath = `${homePath.trim()}/ruda/${env.name}/files/${fileSha256}`;
+
+  await sshConnection.exec('sh', ['-c', `rm -f ${filePath}`]);
+
+  delete config.files[fileSha256];
+
+  await writeRemoteConfig(env, sshConnection, config);
+
+  sshConnection.dispose();
 }
