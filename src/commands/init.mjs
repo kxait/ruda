@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { readRudaYml } from '../lib/config.mjs';
 import { getSshConnection } from '../lib/get-ssh-connection.mjs';
 
@@ -11,7 +12,7 @@ export async function init() {
       `touch ~/ruda/${envName}/config.yml`,
     ]);
     sshConnection.dispose();
-    console.log(`env ${envName} initialized`);
+    console.log(chalk.blue('init'), `env ${envName} initialized`);
   }
-  console.log(`done`);
+  console.log(chalk.blue('init'), `done`);
 }

@@ -6,6 +6,7 @@ import { getSingleEnv } from '../lib/get-single-env.mjs';
 import { checkEnvInitialized } from '../lib/check-env-initialized.mjs';
 import { writeRemoteConfig } from '../lib/write-remote-config.mjs';
 import { readFile, stat } from 'node:fs/promises';
+import chalk from 'chalk';
 /** @import {Command} from "commander" */
 
 /**
@@ -22,8 +23,10 @@ export async function setFile() {
     await upload(this);
   }
 
-  console.log('done');
+  console.log(chalk.blue('set-file'), 'done');
 }
+
+// TODO: deduplicate this code
 
 /** @param {Command} self */
 async function upload(self) {
@@ -40,7 +43,7 @@ async function upload(self) {
     }
   })();
   if (path && !fileExists) {
-    console.error('error: file does not exist or is a dir');
+    console.error(chalk.red('error: file does not exist or is a dir'));
     process.exit(1);
   }
 
@@ -86,7 +89,7 @@ async function del(self) {
 
   const row = Object.entries(config.files).find(([_, v]) => v === self.args[0]);
   if (!row) {
-    console.error('error: file does not exist on remote');
+    console.error(chalk.red('error: file does not exist on remote'));
     process.exit(1);
   }
   const [fileSha256] = row;

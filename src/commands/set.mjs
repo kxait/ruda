@@ -4,6 +4,7 @@ import { getRemoteConfig } from '../lib/get-remote-config.mjs';
 import { getSingleEnv } from '../lib/get-single-env.mjs';
 import { checkEnvInitialized } from '../lib/check-env-initialized.mjs';
 import { writeRemoteConfig } from '../lib/write-remote-config.mjs';
+import chalk from 'chalk';
 /** @import {Command} from "commander" */
 
 /**
@@ -29,5 +30,5 @@ export async function set() {
   await writeRemoteConfig(env, sshConnection, config);
 
   sshConnection.dispose();
-  console.log('done');
+  console.log(chalk.blue('set'), 'done');
 }

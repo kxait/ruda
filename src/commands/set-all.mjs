@@ -6,6 +6,7 @@ import { checkEnvInitialized } from '../lib/check-env-initialized.mjs';
 import { writeRemoteConfig } from '../lib/write-remote-config.mjs';
 import { readFile, stat } from 'node:fs/promises';
 import { ok } from 'node:assert';
+import chalk from 'chalk';
 /** @import {Command} from "commander" */
 
 // perplexity
@@ -21,14 +22,14 @@ export async function setAll() {
   const path = this.args[0];
   const statResult = await stat(path);
   if (!statResult.isFile()) {
-    console.error('error: file does not exist');
+    console.error(chalk.red('error: file does not exist'));
     process.exit(1);
   }
   const fileContent = await readFile(path, 'utf8');
 
   const lines = fileContent.split('\n').filter(Boolean);
   if (lines.length === 0) {
-    console.error('error: file is empty');
+    console.error(chalk.red('error: file is empty'));
     process.exit(1);
   }
 
@@ -42,7 +43,9 @@ export async function setAll() {
   if (Object.keys(linesNotMatching).length > 0) {
     const lineNumbers = Object.values(linesNotMatching).map((l) => l.i);
     console.error(
-      `error: file contains invalid lines (${lineNumbers.join(', ')})`,
+      chalk.red(
+        `error: file contains invalid lines (${lineNumbers.join(', ')})`,
+      ),
     );
     process.exit(1);
   }
@@ -72,5 +75,5 @@ export async function setAll() {
   await writeRemoteConfig(env, sshConnection, config);
 
   sshConnection.dispose();
-  console.log('done');
+  console.log(chalk.blue('set-all'), 'done');
 }

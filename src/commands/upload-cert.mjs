@@ -5,6 +5,7 @@ import { getSingleEnv } from '../lib/get-single-env.mjs';
 import { checkEnvInitialized } from '../lib/check-env-initialized.mjs';
 import { writeRemoteConfig } from '../lib/write-remote-config.mjs';
 import { stat } from 'node:fs/promises';
+import chalk from 'chalk';
 /** @import {Command} from "commander" */
 
 /**
@@ -27,7 +28,7 @@ export async function uploadCert() {
     }
   })();
   if (path && !fileExists) {
-    console.error('error: file does not exist or is a dir');
+    console.error(chalk.red('error: file does not exist or is a dir'));
     process.exit(1);
   }
 
@@ -54,5 +55,5 @@ export async function uploadCert() {
 
   sshConnection.dispose();
 
-  console.log('done');
+  console.log(chalk.blue('upload-cert'), 'done');
 }

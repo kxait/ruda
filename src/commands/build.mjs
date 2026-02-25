@@ -8,6 +8,7 @@ import { sshWithGuardrail } from '../lib/ssh-with-guardrail.mjs';
 import { getEnvPath } from '../lib/get-env-path.mjs';
 import { cloneRepo } from '../lib/build-tools/clone-repo.mjs';
 import { prepareRepoForTarget } from '../lib/build-tools/prepare-repo-for-target.mjs';
+import chalk from 'chalk';
 /** @import {Command} from "commander" */
 
 /**
@@ -32,13 +33,17 @@ export async function build() {
   const remoteConfig = await getRemoteConfig(env, sshConnection);
 
   console.log(
+    chalk.blue('build'),
     remoteConfig.idRsaPath
       ? `using identity file ${remoteConfig.idRsaPath}`
       : 'not using identity file',
   );
 
   if (!repoExists) {
-    console.log(`repo does not exist, cloning into ${repoPath}`);
+    console.log(
+      chalk.blue('build'),
+      `repo does not exist, cloning into ${repoPath}`,
+    );
     await cloneRepo(sshConnection, env, remoteConfig, envPath);
   }
 
@@ -51,7 +56,7 @@ export async function build() {
     this.opts().revision,
   );
 
-  console.log(`running target ${target}`);
+  console.log(chalk.blue('build'), `running target ${target}`);
 
   await sshWithGuardrail(
     sshConnection,
@@ -61,5 +66,5 @@ export async function build() {
   );
 
   sshConnection.dispose();
-  console.log('done');
+  console.log(chalk.blue('build'), 'done');
 }

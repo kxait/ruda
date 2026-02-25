@@ -16,11 +16,9 @@ export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
       console.log(chalk.grey(data.toString()));
     },
     onStderr: (data) => {
-      console.error(chalk.red(data.toString()));
+      console.error(chalk.red('stderr'), chalk.grey(data.toString().trim()));
     },
   });
-
-  console.log(result);
 
   if (result.code !== 0) {
     console.error(chalk.red(`error: error running ${opName}`));
