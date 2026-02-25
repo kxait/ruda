@@ -21,3 +21,6 @@ set2:
 
 set-e:
 	RUDA_YML=_test_dir/.ruda.yml npm run start -- set env testt -e ruda-prd
+
+set-all:
+	RUDA_YML=_test_dir/.ruda.yml npm run start set-all _test_dir/env
