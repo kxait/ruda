@@ -9,14 +9,17 @@ import { getEnvPath } from '../lib/get-env-path.mjs';
 import { cloneRepo } from '../lib/build-tools/clone-repo.mjs';
 import { prepareRepoForTarget } from '../lib/build-tools/prepare-repo-for-target.mjs';
 import chalk from 'chalk';
-/** @import {Command} from "commander" */
+/**
+ * @import {Command} from "commander"
+ * @import {RudaYmlResultEnv} from "../lib/config.mjs"
+ */
 
 /**
- * [target='rbuild'] -e, --env <env name> -r, --revision <revision>
+ * <target> -e, --env <env name> -r, --revision <revision>
  *
  * @this {Command}
  */
-export async function build() {
+export async function run() {
   const yml = await readRudaYml();
 
   const env = getSingleEnv(this, yml);
@@ -32,31 +35,39 @@ export async function build() {
 
   const remoteConfig = await getRemoteConfig(env, sshConnection);
 
-  console.log(
-    chalk.blue('build'),
-    remoteConfig.idRsaPath
-      ? `using identity file ${remoteConfig.idRsaPath}`
-      : 'not using identity file',
-  );
+  for (const file of env.files ?? []) {
+    const existsOnRemote = Object.values(remoteConfig.files).includes(file);
+    if (!existsOnRemote) {
+      console.error(chalk.red(`error: file ${file} not found on remote`));
+      process.exit(1);
+    }
+  }
+
+  if (!remoteConfig.idRsaPath) {
+    console.log(chalk.blue('run'), 'not using identity file');
+  }
 
   if (!repoExists) {
     console.log(
-      chalk.blue('build'),
+      chalk.blue('run'),
       `repo does not exist, cloning into ${repoPath}`,
     );
     await cloneRepo(sshConnection, env, remoteConfig, envPath);
   }
 
-  const target = this.opts().target ?? 'rbuild';
+  const target = this.args[0];
 
-  const { envVars } = await prepareRepoForTarget(
+  const { envVars: remoteEnvVars } = await prepareRepoForTarget(
     sshConnection,
     remoteConfig,
     envPath,
     this.opts().revision,
   );
 
-  console.log(chalk.blue('build'), `running target ${target}`);
+  const localEnvVars = getRudaYmlEnvVars(env);
+  const envVars = `${localEnvVars} ${remoteEnvVars}`.trim();
+
+  console.log(chalk.blue('run'), `running target ${target}`);
 
   await sshWithGuardrail(
     sshConnection,
@@ -66,5 +77,14 @@ export async function build() {
   );
 
   sshConnection.dispose();
-  console.log(chalk.blue('build'), 'done');
+  console.log(chalk.blue('run'), 'done');
+}
+
+/**
+ * @param {RudaYmlResultEnv} env
+ * @returns {string}
+ */
+function getRudaYmlEnvVars(env) {
+  const pairs = Object.entries(env.env ?? {});
+  return pairs.map(([k, v]) => `${k}=${v}`).join(' ');
 }

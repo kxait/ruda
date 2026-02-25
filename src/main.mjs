@@ -1,12 +1,11 @@
 #!/usr/bin/env node
-import { build } from './commands/build.mjs';
-import { deploy } from './commands/deploy.mjs';
 import { init } from './commands/init.mjs';
 import { program } from 'commander';
 import { setAll } from './commands/set-all.mjs';
 import { setFile } from './commands/set-file.mjs';
 import { uploadCert } from './commands/upload-cert.mjs';
 import { set } from './commands/set.mjs';
+import { run } from './commands/run.mjs';
 
 program.description('simple remote task runner');
 program.command('init').action(init);
@@ -21,6 +20,7 @@ program
   )
   .action(set)
   .option('-e, --env <env-name>', 'environment name');
+
 program
   .command('set-all <env-file>')
   .description(
@@ -28,6 +28,7 @@ program
   )
   .action(setAll)
   .option('-e, --env <env-name>', 'environment name');
+
 program
   .command('set-file <remote-path> [local-file]')
   .description(
@@ -35,17 +36,12 @@ program
   )
   .action(setFile)
   .option('-e, --env <env-name>', 'environment name');
+
 program
-  .command('build')
-  .argument('[target]', 'build target', 'rbuild')
-  .action(build)
+  .command('run')
+  .argument('<target>', 'build target')
+  .action(run)
   .option('-e, --env <env-name>', 'environment name')
   .option('-r, --revision <revision>', 'revision to build');
 
-program
-  .command('deploy')
-  .argument('[target]', 'build target', 'rdeploy')
-  .action(deploy)
-  .option('-e, --env <env-name>', 'environment name')
-  .option('-r, --revision <revision>', 'revision to build');
 program.parse();

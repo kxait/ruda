@@ -34,6 +34,7 @@ export async function setAll() {
   }
 
   const linesNotMatching = lines
+    .filter((l) => !l.startsWith('#'))
     .map((l, i) => ({
       i,
       result: EnvLineRe.test(l),

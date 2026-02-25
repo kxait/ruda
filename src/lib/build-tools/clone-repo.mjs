@@ -18,7 +18,7 @@ export async function cloneRepo(sshConnection, env, remoteConfig, envPath) {
   await sshWithGuardrail(
     sshConnection,
     envPath,
-    `GIT_SSH_COMMAND="${gitSshCommand}" git clone ${env.repo} ${repoPath}`,
+    `GIT_SSH_COMMAND="${gitSshCommand}" git clone ${env.repo_url} ${repoPath}`,
     'repo clone',
   );
 }

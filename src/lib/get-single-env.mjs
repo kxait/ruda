@@ -22,10 +22,10 @@ export function getSingleEnv(self, yml) {
   }
 
   if (yml.hasOneEnv) {
-    return yml.environments[Object.keys(yml.environments)[0]];
+    return yml.envs[Object.keys(yml.envs)[0]];
   }
 
-  const maybeEnv = yml.environments[env];
+  const maybeEnv = yml.envs[env];
   if (!maybeEnv) {
     console.error(`error: no environment named ${env}`);
     process.exit(1);

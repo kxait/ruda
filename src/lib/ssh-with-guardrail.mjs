@@ -13,10 +13,22 @@ export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
     cwd,
     stream: 'both',
     onStdout: (data) => {
-      console.log(chalk.grey(data.toString()));
+      console.log(
+        chalk.grey('remote'),
+        data
+          .toString()
+          .trim()
+          .replaceAll('\n', `\n${chalk.grey('remote')} `),
+      );
     },
+    // most stderr is not an error, so we don't want to print it to stderr
     onStderr: (data) => {
-      console.error(chalk.red('stderr'), chalk.grey(data.toString().trim()));
+      console.log(
+        `${chalk.red('!')}${chalk.grey('remote')}`,
+        chalk
+          .grey(data.toString().trim())
+          .replaceAll('\n', `\n${chalk.red('!')}${chalk.grey('remote')} `),
+      );
     },
   });
 

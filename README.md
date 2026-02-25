@@ -28,6 +28,7 @@ create a .ruda.yml file in your project root
 ```yaml
 environments:
   service-prd:
+    keyPath: ~/.ssh/id_my-awesome-server
     hostname: my-awesome-server.com
     username: ci
     repo: git@github.com:you/service-prd.git
