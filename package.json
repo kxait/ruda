@@ -2,9 +2,9 @@
   "name": "ruda",
   "version": "1.0.0",
   "type": "module",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "node src/main.mjs"
+  "main": "src/main.mjs",
+  "bin": {
+    "ruda": "src/main.mjs"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",

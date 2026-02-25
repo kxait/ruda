@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { build } from './commands/build.mjs';
 import { deploy } from './commands/deploy.mjs';
 import { init } from './commands/init.mjs';
@@ -6,12 +7,6 @@ import { setAll } from './commands/set-all.mjs';
 import { setFile } from './commands/set-file.mjs';
 import { uploadCert } from './commands/upload-cert.mjs';
 import { set } from './commands/set.mjs';
-/**
- * @import {
- *   rudaYmlEnvironmentSchema,
- *   rudaYmlSchema
- * } from "./config.mjs"
- */
 
 program.description('simple remote task runner');
 program.command('init').action(init);

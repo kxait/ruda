@@ -41,3 +41,6 @@ rdeploy:
 #
 #deploy:
 #	$(RUDA) deploy
+
+install:
+	npm link
