@@ -42,8 +42,11 @@ program
   .option('-e, --env <env-name>', 'environment name');
 program
   .command('build')
+  .argument('[target]', 'build target')
   .action(build)
-  .option('-e, --env <env-name>', 'environment name');
+  .option('-e, --env <env-name>', 'environment name')
+  .option('-r, --revision <revision>', 'revision to build');
+
 program
   .command('deploy')
   .action(deploy)

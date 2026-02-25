@@ -5,9 +5,9 @@ RUDA_YML ?= _test_dir/.ruda.yml
 RUDA := RUDA_YML=$(RUDA_YML) npm run start
 
 rbuild:
-	echo "building"
+	@echo "building"
 rdeploy:
-	echo "deploying"
+	@echo "deploying"
 
 clean:
 	ssh -i ~/.ssh/id_generated_ed25519 ci@srv1 "rm -rf ~/ruda"
@@ -34,4 +34,7 @@ del-file:
 	$(RUDA) set-file remote-path/to/file.txt
 
 upload-cert:
-	$(RUDA) upload-cert ~/.ssh/id_ed25519
+	$(RUDA) upload-cert ~/.ssh/id_ed25519_ruda_github
+
+build:
+	$(RUDA) build

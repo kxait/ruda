@@ -46,6 +46,7 @@ export async function uploadCert() {
   const remotePath = `${homePath.trim()}/ruda/${env.name}/id_rsa`;
 
   await sshConnection.putFile(path, remotePath);
+  await sshConnection.exec('sh', ['-c', `chmod 700 ${remotePath}`]);
 
   config.idRsaPath = remotePath;
 
