@@ -5,7 +5,7 @@ RUDA_YML ?= _test_dir/.ruda.yml
 RUDA := RUDA_YML=$(RUDA_YML) npm run start
 
 rbuild:
-	@echo "building"
+	@echo "building with env set to $(env) $env"
 rdeploy:
 	@echo "deploying"
 
