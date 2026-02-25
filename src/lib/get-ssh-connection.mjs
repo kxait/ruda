@@ -16,6 +16,7 @@ export async function getSshConnection(env) {
     console.error('ssh key file not found')
     process.exit(1)
   }
+
   const sshKey = await readFile(p, 'utf8')
   try {
     return await new NodeSSH().connect({
