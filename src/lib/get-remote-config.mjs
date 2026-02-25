@@ -19,6 +19,7 @@ export async function getRemoteConfig(env, sshConnection) {
   ]);
 
   try {
+    // you'd think you could somehow just do this with zod
     const configParsed = parse(configText);
     if (configParsed === null) {
       return { env: {}, files: {} };
@@ -26,6 +27,7 @@ export async function getRemoteConfig(env, sshConnection) {
     const cfg = {
       env: configParsed['env'] ?? {},
       files: configParsed['files'] ?? {},
+      idRsaPath: configParsed['idRsaPath'] ?? undefined,
     };
     return remoteConfigSchema.parse(cfg);
   } catch (e) {
