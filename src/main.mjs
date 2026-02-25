@@ -42,13 +42,15 @@ program
   .option('-e, --env <env-name>', 'environment name');
 program
   .command('build')
-  .argument('[target]', 'build target')
+  .argument('[target]', 'build target', 'rbuild')
   .action(build)
   .option('-e, --env <env-name>', 'environment name')
   .option('-r, --revision <revision>', 'revision to build');
 
 program
   .command('deploy')
+  .argument('[target]', 'build target', 'rdeploy')
   .action(deploy)
-  .option('-e, --env <env-name>', 'environment name');
+  .option('-e, --env <env-name>', 'environment name')
+  .option('-r, --revision <revision>', 'revision to build');
 program.parse();

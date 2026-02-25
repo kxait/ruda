@@ -38,3 +38,6 @@ upload-cert:
 
 build:
 	$(RUDA) build
+
+deploy:
+	$(RUDA) deploy
