@@ -60,7 +60,7 @@ $ ruda set-all .env
 you can also upload a single file to live in a specific path
 
 ```bash
-$ ruda set-file some-local-secret.json remote-path-to-file.json
+$ ruda set-file remote-path-to-file.json some-local-secret.json
 ```
 
 ### running builds
