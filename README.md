@@ -2,10 +2,10 @@
 
 simple remote task runner
 
-- provide a way to build and deploy software remotely
-- be manageable via cli
-- be easy to add, remove projects, run builds etc
-- be easy to add configuration for each project
+- build and deploy software remotely without installing agents on remote
+- manageable via cli
+- easy to add, remove projects, run builds etc
+- easy to add configuration for each project
 
 ## getting started
 
@@ -28,8 +28,8 @@ create a .ruda.yml file in your project root
 ```yaml
 environments:
   service-prd:
-    # assumes you have access to this server, preferably via private key auth
-    ssh: ci@my-awesome-server.com 
+    hostname: my-awesome-server.com
+    username: ci
     repo: git@github.com:you/service-prd.git
 ```
 
@@ -60,7 +60,7 @@ $ ruda set-all .env
 you can also upload a single file to live in a specific path
 
 ```bash
-$ ruda set-file remote-path-to-file.json some-local-secret.json
+$ ruda set-file remote-path-to-file.json super/secret/some-local-secret.json
 ```
 
 ### running builds
