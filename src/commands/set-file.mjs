@@ -57,6 +57,18 @@ async function upload(self) {
 
   const config = await getRemoteConfig(env, sshConnection);
 
+  const fileAtThisPathSha256 = Object.entries(config.files).find(
+    ([_, v]) => v === self.args[0],
+  )?.[0];
+  if (fileAtThisPathSha256) {
+    console.error(
+      chalk.red(
+        `error: file already exists at this path, run 'ruda set-file ${self.args[0]}' to remove`,
+      ),
+    );
+    process.exit(1);
+  }
+
   const homePath = await sshConnection.exec('sh', ['-c', 'echo $HOME']);
 
   const fileContent = await readFile(path, 'utf8');

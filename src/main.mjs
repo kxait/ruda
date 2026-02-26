@@ -6,6 +6,7 @@ import { setFile } from './commands/set-file.mjs';
 import { uploadCert } from './commands/upload-cert.mjs';
 import { set } from './commands/set.mjs';
 import { run } from './commands/run.mjs';
+import { vars } from './commands/vars.mjs';
 
 program.description('simple remote task runner');
 program.command('init').action(init);
@@ -38,10 +39,14 @@ program
   .option('-e, --env <env-name>', 'environment name');
 
 program
-  .command('run')
-  .argument('<target>', 'build target')
+  .command('run <target>')
   .action(run)
   .option('-e, --env <env-name>', 'environment name')
   .option('-r, --revision <revision>', 'revision to build');
+
+program
+  .command('vars')
+  .option('-e, --env <env-name>', 'environment name')
+  .action(vars);
 
 program.parse();
