@@ -3,8 +3,8 @@ import { readRudaYml } from '../lib/config.mjs';
 import { getSshConnection } from '../lib/get-ssh-connection.mjs';
 
 export async function init() {
-  const { environments } = await readRudaYml();
-  for (const [envName, env] of Object.entries(environments)) {
+  const { envs } = await readRudaYml();
+  for (const [envName, env] of Object.entries(envs)) {
     const sshConnection = await getSshConnection(env);
     await sshConnection.exec('sh', ['-c', `mkdir -p ~/ruda/${envName}/files`]);
     await sshConnection.exec('sh', [
