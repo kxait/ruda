@@ -1,15 +1,15 @@
-import { sshWithGuardrail } from '../ssh-with-guardrail.mjs';
+import { sshWithGuardrail } from '../ssh/ssh-with-guardrail.mjs';
 import { getSshCommand } from './get-ssh-command.mjs';
 /**
  * @import {NodeSSH} from "node-ssh"
  * @import {RudaYmlResultEnv} from "../config.mjs"
- * @import {RemoteConfig} from "../remote-config-schema.mjs"
+ * @import {remoteConfigSchema} from "../remote/remote-config-schema.mjs"
  */
 
 /**
  * @param {NodeSSH} sshConnection
  * @param {RudaYmlResultEnv} env
- * @param {RemoteConfig} remoteConfig
+ * @param {remoteConfigSchema} remoteConfig
  * @param {string} envPath
  */
 export async function cloneRepo(sshConnection, env, remoteConfig, envPath) {

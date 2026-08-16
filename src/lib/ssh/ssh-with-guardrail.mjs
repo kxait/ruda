@@ -1,6 +1,7 @@
 /** @import {NodeSSH} from "node-ssh" */
 
 import chalk from 'chalk';
+import { elegantExit } from '../elegant-exit.mjs';
 
 /**
  * @param {NodeSSH} sshConnection
@@ -33,8 +34,9 @@ export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
   });
 
   if (result.code !== 0) {
-    console.error(chalk.red(`error: error running ${opName}`));
-    sshConnection.dispose();
-    process.exit(result.code);
+    console.error(
+      chalk.red(`error: error running ${opName} (result code ${result.code})`),
+    );
+    await elegantExit(result.code ?? 1);
   }
 }

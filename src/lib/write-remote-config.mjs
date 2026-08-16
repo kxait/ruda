@@ -1,7 +1,7 @@
 /**
  * @import {NodeSSH} from "node-ssh"
  * @import {RudaYmlResultEnv} from "./config.mjs"
- * @import {RemoteConfig} from "./remote-config-schema.mjs"
+ * @import {remoteConfigSchema} from "./remote/remote-config-schema.mjs"
  */
 
 import { stringify } from 'yaml';
@@ -10,7 +10,7 @@ import { encodeTransport } from './encode-transport.mjs';
 /**
  * @param {RudaYmlResultEnv} env
  * @param {NodeSSH} sshConnection
- * @param {RemoteConfig} config
+ * @param {remoteConfigSchema} config
  */
 export async function writeRemoteConfig(env, sshConnection, config) {
   const configSerialized = stringify(config);

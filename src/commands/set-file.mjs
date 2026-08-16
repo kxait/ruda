@@ -109,6 +109,10 @@ async function del(self) {
   const filePath = `${homePath.trim()}/ruda/${env.name}/files/${fileSha256}`;
 
   await sshConnection.exec('sh', ['-c', `rm -f ${filePath}`]);
+  // dangerous
+  await sshConnection.exec('sh', ['-c', `rm -f ${config.files[fileSha256]}`], {
+    cwd: `${homePath.trim()}/ruda/${env.name}/repo`,
+  });
 
   delete config.files[fileSha256];
 

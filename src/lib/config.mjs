@@ -4,14 +4,13 @@ import { cwd } from 'node:process';
 import { parse } from 'yaml';
 import z from 'zod';
 
-import { config } from 'dotenv';
 import chalk from 'chalk';
-config();
 
 const rudaYmlEnvironmentSchema = z.object({
   repo_url: z.string(),
   ssh_host: z.string(),
   ssh_user: z.string(),
+  ssh_port: z.string().optional().default('22'),
   ssh_key_path: z.string(),
   env: z.record(z.string(), z.string()).optional(),
   files: z.array(z.string()).optional(),
@@ -60,6 +59,7 @@ export async function readRudaYml() {
             repo_url: unwrapEnvValue(v.repo_url) ?? '',
             ssh_host: unwrapEnvValue(v.ssh_host) ?? '',
             ssh_user: unwrapEnvValue(v.ssh_user) ?? '',
+            ssh_port: unwrapEnvValue(v.ssh_port) ?? '22',
             ssh_key_path: unwrapEnvValue(v.ssh_key_path) ?? '',
             env: Object.fromEntries(
               Object.entries(v.env ?? {}).map(([k, v]) => [

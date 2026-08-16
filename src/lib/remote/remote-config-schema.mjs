@@ -6,4 +6,4 @@ export const remoteConfigSchema = z.object({
   idRsaPath: z.string().optional(),
 });
 
-/** @typedef {z.infer<typeof remoteConfigSchema>} RemoteConfig */
+/** @typedef {z.infer<typeof remoteConfigSchema>} remoteConfigSchema */

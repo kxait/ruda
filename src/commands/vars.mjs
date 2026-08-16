@@ -78,5 +78,5 @@ export async function vars() {
   }
 
   sshConnection.dispose();
-  console.log(chalk.blue('set'), 'done');
+  console.log(chalk.blue('vars'), 'done');
 }

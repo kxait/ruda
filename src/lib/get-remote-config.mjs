@@ -1,16 +1,15 @@
 /**
  * @import {NodeSSH} from "node-ssh"
  * @import {RudaYmlResultEnv} from "./config.mjs"
- * @import {RemoteConfig} from "./remote-config-schema.mjs"
  */
 
 import { parse } from 'yaml';
-import { remoteConfigSchema } from './remote-config-schema.mjs';
+import { remoteConfigSchema } from './remote/remote-config-schema.mjs';
 
 /**
  * @param {RudaYmlResultEnv} env
  * @param {NodeSSH} sshConnection
- * @returns {Promise<RemoteConfig>}
+ * @returns {Promise<remoteConfigSchema>}
  */
 export async function getRemoteConfig(env, sshConnection) {
   const configText = await sshConnection.exec('sh', [

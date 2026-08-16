@@ -1,13 +1,15 @@
-import { sshWithGuardrail } from '../ssh-with-guardrail.mjs';
+import { execSync } from 'node:child_process';
+import { sshWithGuardrail } from '../ssh/ssh-with-guardrail.mjs';
 import { getSshCommand } from './get-ssh-command.mjs';
+import chalk from 'chalk';
 /**
  * @import {NodeSSH} from "node-ssh"
- * @import {RemoteConfig} from "../remote-config-schema.mjs"
+ * @import {remoteConfigSchema} from "../remote/remote-config-schema.mjs"
  */
 
 /**
  * @param {NodeSSH} sshConnection
- * @param {RemoteConfig} remoteConfig
+ * @param {remoteConfigSchema} remoteConfig
  * @param {string} envPath
  * @param {string} [revision]
  * @returns {Promise<{ envVars: string }>}
@@ -34,22 +36,30 @@ export async function prepareRepoForTarget(
     'git fetch',
   );
 
-  if (revision) {
-    console.log(`checking out revision ${revision}`);
-    await sshWithGuardrail(
-      sshConnection,
-      repoPath,
-      `GIT_SSH_COMMAND="${gitSshCommand}" git checkout ${revision}`,
-      'git checkout',
-    );
-  }
+  const currentRef = (() => {
+    try {
+      return execSync('git rev-parse HEAD');
+    } catch (e) {
+      console.error(chalk.red('error: could not get current ref'));
+      sshConnection.dispose();
+      process.exit(1);
+    }
+  })();
 
+  const ref = revision ?? currentRef;
   await sshWithGuardrail(
+    sshConnection,
+    repoPath,
+    `GIT_SSH_COMMAND="${gitSshCommand}" git checkout ${ref}`,
+    'git checkout',
+  );
+
+  /*await sshWithGuardrail(
     sshConnection,
     repoPath,
     `GIT_SSH_COMMAND="${gitSshCommand}" git pull`,
     'git pull',
-  );
+  );*/
 
   for (const [fileSha256, remotePath] of Object.entries(remoteConfig.files)) {
     const filePath = `${envPath}/files/${fileSha256}`;

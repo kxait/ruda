@@ -1,7 +1,7 @@
-/** @import {RemoteConfig} from "../remote-config-schema.mjs" */
+/** @import {remoteConfigSchema} from "../remote/remote-config-schema.mjs" */
 
 /**
- * @param {RemoteConfig} remoteConfig
+ * @param {remoteConfigSchema} remoteConfig
  * @returns {string}
  */
 export function getSshCommand(remoteConfig) {

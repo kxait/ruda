@@ -4,7 +4,7 @@ import { getRemoteConfig } from '../lib/get-remote-config.mjs';
 import { getSingleEnv } from '../lib/get-single-env.mjs';
 import { checkEnvInitialized } from '../lib/check-env-initialized.mjs';
 import { getRepoExists } from '../lib/build-tools/get-repo-exists.mjs';
-import { sshWithGuardrail } from '../lib/ssh-with-guardrail.mjs';
+import { sshWithGuardrail } from '../lib/ssh/ssh-with-guardrail.mjs';
 import { getEnvPath } from '../lib/get-env-path.mjs';
 import { cloneRepo } from '../lib/build-tools/clone-repo.mjs';
 import { prepareRepoForTarget } from '../lib/build-tools/prepare-repo-for-target.mjs';
@@ -65,9 +65,19 @@ export async function run() {
   );
 
   const localEnvVars = getRudaYmlEnvVars(env);
-  const envVars = `${localEnvVars} ${remoteEnvVars}`.trim();
 
   console.log(chalk.blue('run'), `running target ${target}`);
+
+  const rudaVars = {
+    RUDA_ENV_NAME: env.name,
+    // TODO: get the current git ref
+    RUDA_REF: this.opts().revision,
+  };
+
+  const rudaVarsString = Object.entries(rudaVars)
+    .map(([k, v]) => `${k}=${v}`)
+    .join(' ');
+  const envVars = `${rudaVarsString} ${localEnvVars} ${remoteEnvVars}`.trim();
 
   await sshWithGuardrail(
     sshConnection,
