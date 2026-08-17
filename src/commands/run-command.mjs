@@ -5,7 +5,7 @@ import { sshWithGuardrail } from '../lib/ssh/ssh-with-guardrail.mjs';
 import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
-export async function runGen2() {
+export async function runCommand() {
   const name = this.args[0];
 
   const { sshConnection, remoteConfig, envPath, hasIdRsa } =

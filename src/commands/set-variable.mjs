@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
-export async function setGen2() {
+export async function setVariable() {
   const name = this.args[0];
   const key = this.args[1];
   const value = this.args[2];

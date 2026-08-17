@@ -6,13 +6,13 @@ import { commandNames } from './commands/command-names.mjs';
 import { metaconfig } from './commands/metaconfig.mjs';
 import { describeEnv } from './commands/describe-env.mjs';
 import { envPubkey } from './commands/env-pubkey.mjs';
-import { initEnvGen2 } from './commands/init-env-gen2.mjs';
+import { initEnv } from './commands/init-env.mjs';
 import { initMetaconfig } from './commands/init-metaconfig.mjs';
 import { listEnvs } from './commands/list-envs.mjs';
 import { removeEnv } from './commands/remove-env.mjs';
-import { runGen2 } from './commands/run-gen2.mjs';
-import { setFileGen2 } from './commands/set-file-gen2.mjs';
-import { setGen2 } from './commands/set-gen2.mjs';
+import { runCommand } from './commands/run-command.mjs';
+import { setFile } from './commands/set-file.mjs';
+import { setVariable } from './commands/set-variable.mjs';
 import { setMetaconfig } from './commands/set-metaconfig.mjs';
 import { sync } from './commands/sync.mjs';
 
@@ -47,7 +47,7 @@ program
   .command(commandNames.init)
   .argument('name')
   .argument('remote-url', 'git repo url')
-  .action(initEnvGen2)
+  .action(initEnv)
   .option('--generate-identity', 'generate git repo identity file')
   .option('--identity-file <path>', 'git repo identity file path to upload')
   .description('init a new remote environment');
@@ -75,7 +75,7 @@ program
 
 program
   .command(commandNames.set)
-  .action(setGen2)
+  .action(setVariable)
   .argument('env-name')
   .argument('key')
   .argument('[value]', 'value to set, will unset if not provided')
@@ -83,7 +83,7 @@ program
 
 program
   .command(commandNames.setFile)
-  .action(setFileGen2)
+  .action(setFile)
   .argument('env-name')
   .argument('remote-path')
   .argument(
@@ -105,7 +105,7 @@ program
   .command(commandNames.run)
   .argument('env-name')
   .argument('<command-text...>')
-  .action(runGen2)
+  .action(runCommand)
   .description('run a command in the remote environment');
 
 program.hook('postAction', async () => {

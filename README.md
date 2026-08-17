@@ -9,69 +9,118 @@ simple remote task runner
 
 ## getting started
 
-### getting the project ready
-
-ruda works with Makefiles, so create a Makefile with targets build and deploy
-
-```makefile
-.PHONY: rbuild rdeploy
-rbuild:
-	docker compose build
-rdeploy:
-	docker compose up -d
-```
-
-### first time setup
-
-create a .ruda.yml file in your project root
-
-```yaml
-environments:
-  service-prd:
-    keyPath: ~/.ssh/id_my-awesome-server
-    hostname: my-awesome-server.com
-    username: ci
-    repo: git@github.com:you/service-prd.git
-```
-
-then run to init the env fresh
+init the meta config file: this sits in your home directory and contains the remote login credentials
 
 ```bash
-$ ruda init
+$ ruda meta-init
 ```
 
-upload your repo certfile
+set your ssh host, user, and port
 
 ```bash
-$ ruda upload-cert ~/.ssh/id_somecert
+$ ruda meta-set sshHost my-awesome-server.com
+$ ruda meta-set sshUser ci
+$ ruda meta-set sshPort 22
 ```
 
-upload config
+set your ssh key path
 
 ```bash
-$ ruda set var-name var-value
+$ ruda meta-set sshKeyPath ~/.ssh/id_my-awesome-server
 ```
 
-or upload entire config files (.env formatted)
+## creating an environment
 
 ```bash
-$ ruda set-all .env
+$ ruda init service-prd git@github.com:you/service-prd.git
 ```
 
-you can also upload a single file to live in a specific path
+will create an environment on the remote without an id_rsa identity. you can also init with an identity file or generate one
 
 ```bash
-$ ruda set-file remote-path-to-file.json super/secret/some-local-secret.json
+$ ruda init service-prd git@github.com:you/service-prd.git --generate-identity
 ```
 
-### running builds
+or
 
 ```bash
-$ ruda build
+$ ruda init service-prd git@github.com:you/service-prd.git --identity-file ./id_rsa
 ```
 
-### running deployments
+## syncing the repo
 
 ```bash
-$ ruda deploy
+$ ruda sync service-prd # --ref <ref>
+```
+
+will sync the repo to the given ref or the latest origin/HEAD. will also copy any files that you have set to the repo
+
+## setting variables
+
+you can set variables on the remote. they will be injected into any commands as env variables
+
+```bash
+$ ruda set service-prd var-name var-value
+```
+
+you can also unset them by not providing a value
+
+## uploading files
+
+you can upload files to the remote and they will be available to the repo once you sync
+
+```bash
+$ ruda set-file service-prd src/some-file-on-the-remote-repo.json /some/local/path/to/file.json
+```
+
+you can remove the file by not providing a local path
+
+## running commands
+
+run a command in the remote environment
+
+```bash
+$ ruda run service-prd make build
+```
+
+```bash
+$ ruda run service-prd "docker compose logs -f"
+```
+
+```bash
+$ ruda run service-prd "sudo rm -rf /"
+```
+
+stdin is supported
+
+## other commands
+
+list all remote environments
+
+```bash
+$ ruda list
+```
+
+describe a remote environment
+
+```bash
+$ ruda describe service-prd
+```
+
+remove a remote environment
+
+```bash
+$ ruda remove service-prd
+```
+
+get an environment id_rsa public key (useful for setting up github build keys)
+
+```bash
+$ ruda pubkey service-prd
+```
+
+read the meta config file
+
+```bash
+$ ruda meta-get
 ```

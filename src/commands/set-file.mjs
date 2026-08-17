@@ -10,7 +10,7 @@ import { commandNames } from './command-names.mjs';
 import path from 'node:path';
 
 /** @this {Command} */
-export async function setFileGen2() {
+export async function setFile() {
   const name = this.args[0];
   const filePathRemote = this.args[1];
   const filePathLocal = this.args[2];

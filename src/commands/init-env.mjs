@@ -11,7 +11,7 @@ import { elegantExit } from '../lib/elegant-exit.mjs';
 import { getCommandContext } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
-export async function initEnvGen2() {
+export async function initEnv() {
   const name = this.args[0];
   const remoteUrl = this.args[1];
 
