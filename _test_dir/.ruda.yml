@@ -1,6 +1,0 @@
-environments:
-  ruda-prd:
-    keyPath: ~/.ssh/id_generated_ed25519
-    hostname: srv1
-    username: ci
-    repo: git@github.com:kxait/ruda.git
