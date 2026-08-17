@@ -15,7 +15,7 @@ export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
     stream: 'both',
     onStdout: (data) => {
       console.log(
-        chalk.grey('remote'),
+        chalk.grey(' remote'),
         data
           .toString()
           .trim()
@@ -31,6 +31,7 @@ export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
           .replaceAll('\n', `\n${chalk.red('!')}${chalk.grey('remote')} `),
       );
     },
+    stdin: process.stdin,
   });
 
   if (result.code !== 0) {

@@ -1,12 +1,9 @@
 /** @import {Command} from "commander" */
 
-import { ok } from 'assert';
-import { getRemoteValidRudaDirPath } from '../lib/remote/get-remote-valid-ruda-dir-path.mjs';
-import { getDefaultSshConnectionPool } from '../lib/ssh/ssh-connection-pool.mjs';
-import { getRemoteConfigGen2 } from '../lib/remote/get-remote-config-gen2.mjs';
 import { writeRemoteConfigGen2 } from '../lib/remote/write-remote-config-gen2.mjs';
 import { commandNames } from './command-names.mjs';
 import chalk from 'chalk';
+import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function setGen2() {
@@ -14,11 +11,10 @@ export async function setGen2() {
   const key = this.args[1];
   const value = this.args[2];
 
-  const sshConnection = await getDefaultSshConnectionPool().getConnection();
-  ok(sshConnection !== 'busy');
-  const remoteRudaPath = await getRemoteValidRudaDirPath(sshConnection);
-  const envPath = `${remoteRudaPath}/${name}`;
-  const remoteConfig = await getRemoteConfigGen2(sshConnection, envPath);
+  const { sshConnection, remoteConfig, envPath } =
+    await getCommandContextWithEnv({
+      envName: name,
+    });
 
   remoteConfig.env[key] = value;
 

@@ -11,6 +11,7 @@ import { stringify } from 'yaml';
 import { encodeTransport } from '../lib/encode-transport.mjs';
 import { remoteGenerateEd25519 } from '../lib/remote/remote-generate-ed25519.mjs';
 import { elegantExit } from '../lib/elegant-exit.mjs';
+import { getCommandContext } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function initEnvGen2() {
@@ -50,9 +51,7 @@ export async function initEnvGen2() {
     }
   }
 
-  const sshConnection = await getDefaultSshConnectionPool().getConnection();
-  ok(sshConnection !== 'busy');
-  const remoteRudaPath = await getRemoteValidRudaDirPath(sshConnection, true);
+  const { sshConnection, remoteRudaPath } = await getCommandContext();
 
   const envPath = `${remoteRudaPath}/${name}`;
 
