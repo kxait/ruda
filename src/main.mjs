@@ -1,76 +1,25 @@
 #!/usr/bin/env node
-import { init } from './commands/init.mjs';
 import { program } from 'commander';
-import { setAll } from './commands/set-all.mjs';
-import { setFile } from './commands/set-file.mjs';
-import { uploadCert } from './commands/upload-cert.mjs';
-import { set } from './commands/set.mjs';
-import { run } from './commands/run.mjs';
-import { vars } from './commands/vars.mjs';
-import { commandNames } from './commands/gen2/command-names.mjs';
 import { defaultMetaconfigPath } from './lib/meta/default-metaconfig-path.mjs';
-import { setGen2 } from './commands/gen2/set-gen2.mjs';
-import { describeEnv } from './commands/gen2/describe-env.mjs';
-import { setFileGen2 } from './commands/gen2/set-file-gen2.mjs';
-import { sync } from './commands/gen2/sync.mjs';
-import { runGen2 } from './commands/gen2/run-gen2.mjs';
 import { elegantExit } from './lib/elegant-exit.mjs';
-import { envPubkey } from './commands/gen2/env-pubkey.mjs';
-import { initEnvGen2 } from './commands/gen2/init-env-gen2.mjs';
-import { initMetaconfig } from './commands/gen2/init-metaconfig.mjs';
-import { listEnvs } from './commands/gen2/list-envs.mjs';
-import { metaconfig } from './commands/gen2/metaconfig.mjs';
-import { removeEnv } from './commands/gen2/remove-env.mjs';
-import { setMetaconfig } from './commands/gen2/set-metaconfig.mjs';
-import { migrate } from './commands/gen2/migrate.mjs';
+import { commandNames } from './commands/command-names.mjs';
+import { metaconfig } from './commands/metaconfig.mjs';
+import { describeEnv } from './commands/describe-env.mjs';
+import { envPubkey } from './commands/env-pubkey.mjs';
+import { initEnvGen2 } from './commands/init-env-gen2.mjs';
+import { initMetaconfig } from './commands/init-metaconfig.mjs';
+import { listEnvs } from './commands/list-envs.mjs';
+import { removeEnv } from './commands/remove-env.mjs';
+import { runGen2 } from './commands/run-gen2.mjs';
+import { setFileGen2 } from './commands/set-file-gen2.mjs';
+import { setGen2 } from './commands/set-gen2.mjs';
+import { setMetaconfig } from './commands/set-metaconfig.mjs';
+import { sync } from './commands/sync.mjs';
 
-/** Gen1 */
 program.description('remote deployment tool');
 
-program.command('init').action(init);
-
 program
-  .command('upload-cert <cert-path>')
-  .action(uploadCert)
-  .option('-e, --env <env-name>', 'environment name');
-program
-  .command('set <var-name> [value]')
-  .description(
-    'set a variable in the config file, if no value is provided, the variable will be removed',
-  )
-  .action(set)
-  .option('-e, --env <env-name>', 'environment name');
-
-program
-  .command('set-all <env-file>')
-  .description(
-    'upload all variables from a file to the remote server, the file must be in .env format',
-  )
-  .action(setAll)
-  .option('-e, --env <env-name>', 'environment name');
-
-program
-  .command('set-file <remote-path> [local-file]')
-  .description(
-    'upload a file to the remote server, if no local file is provided, the file will be removed',
-  )
-  .action(setFile)
-  .option('-e, --env <env-name>', 'environment name');
-
-program
-  .command('run <target>')
-  .action(run)
-  .option('-e, --env <env-name>', 'environment name')
-  .option('-r, --revision <revision>', 'revision to build');
-
-program
-  .command('vars')
-  .option('-e, --env <env-name>', 'environment name')
-  .action(vars);
-
-/** Gen2 */
-program
-  .command(commandNames.meta)
+  .command(commandNames.metaGet)
   .action(metaconfig)
   .description(`read meta config stored at ${defaultMetaconfigPath}`);
 
@@ -90,12 +39,12 @@ program
   .description('set a meta config value');
 
 program
-  .command(commandNames.env)
+  .command(commandNames.list)
   .action(listEnvs)
   .description('list all remote environments');
 
 program
-  .command(commandNames.envInit)
+  .command(commandNames.init)
   .argument('name')
   .argument('remote-url', 'git repo url')
   .action(initEnvGen2)
@@ -104,14 +53,14 @@ program
   .description('init a new remote environment');
 
 program
-  .command(commandNames.envRemove)
+  .command(commandNames.remove)
   .argument('name')
   .action(removeEnv)
   .option('-f, --force', 'remove despite warnings')
   .description('remove a remote environment');
 
 program
-  .command(commandNames.envPubkey)
+  .command(commandNames.pubkey)
   .argument('name')
   .action(envPubkey)
   .description(
@@ -119,13 +68,13 @@ program
   );
 
 program
-  .command(commandNames.envDescribe)
+  .command(commandNames.describe)
   .argument('name')
   .action(describeEnv)
   .description('describe a remote environment');
 
 program
-  .command(commandNames.set2)
+  .command(commandNames.set)
   .action(setGen2)
   .argument('env-name')
   .argument('key')
@@ -133,7 +82,7 @@ program
   .description('set a value in the env vars for a remote environment');
 
 program
-  .command(commandNames.setFile2)
+  .command(commandNames.setFile)
   .action(setFileGen2)
   .argument('env-name')
   .argument('remote-path')
@@ -153,13 +102,11 @@ program
   );
 
 program
-  .command(commandNames.run2)
+  .command(commandNames.run)
   .argument('env-name')
   .argument('<command-text...>')
   .action(runGen2)
   .description('run a command in the remote environment');
-
-program.command(commandNames.migrate).argument('env-name').action(migrate);
 
 program.hook('postAction', async () => {
   await elegantExit(0);

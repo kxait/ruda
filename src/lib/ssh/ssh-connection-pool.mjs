@@ -68,6 +68,8 @@ export class SshConnectionPool {
       console.error(chalk.red('error: could not connect to ssh server'));
       console.error(e);
       await elegantExit(1);
+      // @ts-ignore - elegantExit has process.exit
+      return {};
     }
   }
 

@@ -1,13 +1,13 @@
 import { NodeSSH } from 'node-ssh';
 import { parse } from 'yaml';
-import { remoteConfigGen2Schema } from './remote-config-gen2-schema.mjs';
+import { remoteConfigSchema } from './remote-config-schema.mjs';
 import chalk from 'chalk';
 import { elegantExit } from '../elegant-exit.mjs';
 
 /**
  * @param {NodeSSH} sshConnection
  * @param {string} envPath
- * @returns {Promise<remoteConfigGen2Schema>}
+ * @returns {Promise<remoteConfigSchema>}
  */
 export async function getRemoteConfigGen2(sshConnection, envPath) {
   const configPath = `${envPath}/config.yml`;
@@ -18,7 +18,7 @@ export async function getRemoteConfigGen2(sshConnection, envPath) {
 
   try {
     const configParsed = parse(configText);
-    return remoteConfigGen2Schema.parse(configParsed);
+    return remoteConfigSchema.parse(configParsed);
   } catch (e) {
     console.error(
       chalk.red(`error: could not parse remote config at ${configPath}`),
@@ -26,5 +26,7 @@ export async function getRemoteConfigGen2(sshConnection, envPath) {
     console.error('config text: ', configText);
     console.error(e);
     await elegantExit(1);
+    // @ts-ignore - elegantExit has process.exit
+    return {};
   }
 }

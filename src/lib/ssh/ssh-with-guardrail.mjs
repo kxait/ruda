@@ -19,7 +19,7 @@ export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
         data
           .toString()
           .trim()
-          .replaceAll('\n', `\n${chalk.grey('remote')} `),
+          .replaceAll('\n', `\n${chalk.grey(' remote')} `),
       );
     },
     // most stderr is not an error, so we don't want to print it to stderr

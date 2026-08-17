@@ -1,6 +1,6 @@
-import { getMetaconfig } from '../../lib/meta/get-metaconfig.mjs';
-import { writeMetaconfig } from '../../lib/meta/write-metaconfig.mjs';
-import { elegantExit } from '../../lib/elegant-exit.mjs';
+import { getMetaconfig } from '../lib/meta/get-metaconfig.mjs';
+import { writeMetaconfig } from '../lib/meta/write-metaconfig.mjs';
+import { elegantExit } from '../lib/elegant-exit.mjs';
 /** @import {Command} from "commander" */
 
 /** @this {Command} */

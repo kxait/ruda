@@ -9,7 +9,7 @@
  *   remoteRudaPath: string;
  *   envName: string;
  *   envPath: string;
- *   remoteConfig: remoteConfigGen2Schema;
+ *   remoteConfig: remoteConfigSchema;
  *   hasIdRsa: boolean;
  * }} CommandContextWithEnv
  *
@@ -21,9 +21,9 @@
  */
 
 import { ok } from 'assert';
-import { getRemoteConfigGen2 } from './remote/get-remote-config-gen2.mjs';
+import { getRemoteConfigGen2 } from './remote/get-remote-config.mjs';
 import { getRemoteValidRudaDirPath } from './remote/get-remote-valid-ruda-dir-path.mjs';
-import { remoteConfigGen2Schema } from './remote/remote-config-gen2-schema.mjs';
+import { remoteConfigSchema } from './remote/remote-config-schema.mjs';
 import { getDefaultSshConnectionPool } from './ssh/ssh-connection-pool.mjs';
 import chalk from 'chalk';
 import { elegantExit } from './elegant-exit.mjs';

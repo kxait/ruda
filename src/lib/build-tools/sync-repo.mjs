@@ -1,7 +1,7 @@
 /** @import {NodeSSH} from "node-ssh" */
 
 import chalk from 'chalk';
-import { remoteConfigGen2Schema } from '../remote/remote-config-gen2-schema.mjs';
+import { remoteConfigSchema } from '../remote/remote-config-schema.mjs';
 import { cloneRepo } from './clone-repo.mjs';
 import { getRepoRef } from './get-repo-ref.mjs';
 import { restoreFetchRepo } from './restore-fetch-repo.mjs';
@@ -13,7 +13,7 @@ import { checkoutRepo } from './checkout-repo.mjs';
 /**
  * @param {NodeSSH} sshConnection
  * @param {string} envPath
- * @param {remoteConfigGen2Schema} remoteConfig
+ * @param {remoteConfigSchema} remoteConfig
  * @param {SyncOptions | undefined} options
  */
 export async function syncRepo(sshConnection, envPath, remoteConfig, options) {

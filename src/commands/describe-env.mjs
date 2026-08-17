@@ -1,7 +1,7 @@
 /** @import {Command} from "commander" */
 
 import chalk from 'chalk';
-import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
+import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 import { commandNames } from './command-names.mjs';
 
 /** @this {Command} */
@@ -13,28 +13,28 @@ export async function describeEnv() {
       envName: name,
     });
 
-  console.log(chalk.blue(commandNames.envDescribe), chalk.green('name'), name);
+  console.log(chalk.blue(commandNames.describe), chalk.green('name'), name);
 
   console.log(
-    chalk.blue(commandNames.envDescribe),
+    chalk.blue(commandNames.describe),
     chalk.green('env path'),
     envPath,
   );
 
   console.log(
-    chalk.blue(commandNames.envDescribe),
+    chalk.blue(commandNames.describe),
     chalk.green('cfg version'),
     remoteConfig.version,
   );
 
   console.log(
-    chalk.blue(commandNames.envDescribe),
+    chalk.blue(commandNames.describe),
     chalk.green('remote url'),
     remoteConfig.remoteUrl,
   );
 
   console.log(
-    chalk.blue(commandNames.envDescribe),
+    chalk.blue(commandNames.describe),
     chalk.green('has ssh identity'),
     hasIdRsa
       ? remoteConfig.didGenerateIdRsa
@@ -48,11 +48,11 @@ export async function describeEnv() {
       '-c',
       `ssh-keygen -y -f ${envPath}/id_rsa`,
     ]);
-    console.log(chalk.blue(commandNames.envDescribe), chalk.green('pubkey'));
+    console.log(chalk.blue(commandNames.describe), chalk.green('pubkey'));
     console.log(pubkey);
   }
 
-  console.log(chalk.blue(commandNames.envDescribe), chalk.green('env vars'));
+  console.log(chalk.blue(commandNames.describe), chalk.green('env vars'));
 
   const envEntries = Object.entries(remoteConfig.env);
   if (envEntries.length === 0) {
@@ -62,7 +62,7 @@ export async function describeEnv() {
     console.log('  ', chalk.green(key), chalk.gray('='), value);
   }
 
-  console.log(chalk.blue(commandNames.envDescribe), chalk.green('files'));
+  console.log(chalk.blue(commandNames.describe), chalk.green('files'));
 
   const fileEntries = Object.entries(remoteConfig.files);
   if (fileEntries.length === 0) {
@@ -78,10 +78,7 @@ export async function describeEnv() {
     `test -d ${repoDir} && echo $? || echo $?`,
   ]);
   if (repoDirExists.trim() === '0') {
-    console.log(
-      chalk.blue(commandNames.envDescribe),
-      chalk.green('repo status'),
-    );
+    console.log(chalk.blue(commandNames.describe), chalk.green('repo status'));
     const repoStatus = await sshConnection.exec('sh', [
       '-c',
       `cd ${repoDir} && git status`,

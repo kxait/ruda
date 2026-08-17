@@ -1,11 +1,11 @@
 /** @import {Command} from "commander" */
 
 import chalk from 'chalk';
-import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
-import { elegantExit } from '../../lib/elegant-exit.mjs';
+import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
+import { elegantExit } from '../lib/elegant-exit.mjs';
 import { readFile, stat } from 'node:fs/promises';
 import { hash } from 'node:crypto';
-import { writeRemoteConfigGen2 } from '../../lib/remote/write-remote-config-gen2.mjs';
+import { writeRemoteConfig } from '../lib/remote/write-remote-config.mjs';
 import { commandNames } from './command-names.mjs';
 import path from 'node:path';
 
@@ -36,7 +36,7 @@ export async function setFileGen2() {
     }
 
     const remotePath = `${envPath}/files/${entry[0]}`;
-    console.log(chalk.blue(commandNames.setFile2), `removing ${remotePath}`);
+    console.log(chalk.blue(commandNames.setFile), `removing ${remotePath}`);
     await sshConnection.exec('sh', ['-c', `rm ${remotePath}`]);
 
     const repoPath = `${envPath}/repo`;
@@ -46,18 +46,18 @@ export async function setFileGen2() {
       `test -f ${fileInRepo} && echo $? || echo $?`,
     ]);
     if (fileExistsInRepo.trim() === '0') {
-      console.log(chalk.blue(commandNames.setFile2), `removing ${fileInRepo}`);
+      console.log(chalk.blue(commandNames.setFile), `removing ${fileInRepo}`);
       await sshConnection.exec('sh', ['-c', `rm ${fileInRepo}`]);
     } else {
       console.log(
-        chalk.blue(commandNames.setFile2),
+        chalk.blue(commandNames.setFile),
         `file ${fileInRepo} does not exist, skipping`,
       );
     }
 
     delete remoteConfig.files[entry[0]];
-    await writeRemoteConfigGen2(sshConnection, envPath, remoteConfig);
-    console.log(chalk.blue(commandNames.setFile2), `done`);
+    await writeRemoteConfig(sshConnection, envPath, remoteConfig);
+    console.log(chalk.blue(commandNames.setFile), `done`);
     return;
   }
 
@@ -94,11 +94,11 @@ export async function setFileGen2() {
 
   const remotePath = `${envPath}/files/${fileSha256}`;
 
-  console.log(chalk.blue(commandNames.setFile2), `uploading to ${remotePath}`);
+  console.log(chalk.blue(commandNames.setFile), `uploading to ${remotePath}`);
 
   await sshConnection.putFile(filePathLocal, remotePath);
 
-  await writeRemoteConfigGen2(sshConnection, envPath, remoteConfig);
+  await writeRemoteConfig(sshConnection, envPath, remoteConfig);
 
-  console.log(chalk.blue(commandNames.setFile2), `done`);
+  console.log(chalk.blue(commandNames.setFile), `done`);
 }

@@ -1,9 +1,9 @@
 /** @import {Command} from "commander" */
 
-import { writeRemoteConfigGen2 } from '../../lib/remote/write-remote-config-gen2.mjs';
+import { writeRemoteConfig } from '../lib/remote/write-remote-config.mjs';
 import { commandNames } from './command-names.mjs';
 import chalk from 'chalk';
-import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
+import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function setGen2() {
@@ -18,7 +18,7 @@ export async function setGen2() {
 
   remoteConfig.env[key] = value;
 
-  await writeRemoteConfigGen2(sshConnection, envPath, remoteConfig);
+  await writeRemoteConfig(sshConnection, envPath, remoteConfig);
 
-  console.log(chalk.blue(commandNames.set2), `done`);
+  console.log(chalk.blue(commandNames.set), `done`);
 }

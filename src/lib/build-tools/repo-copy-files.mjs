@@ -1,13 +1,13 @@
 /** @import {NodeSSH} from "node-ssh" */
 
 import chalk from 'chalk';
-import { remoteConfigGen2Schema } from '../remote/remote-config-gen2-schema.mjs';
+import { remoteConfigSchema } from '../remote/remote-config-schema.mjs';
 import path from 'node:path';
 
 /**
  * @param {NodeSSH} sshConnection
  * @param {string} envPath
- * @param {remoteConfigGen2Schema} remoteConfig
+ * @param {remoteConfigSchema} remoteConfig
  */
 export async function repoCopyFiles(sshConnection, envPath, remoteConfig) {
   const files = Object.entries(remoteConfig.files).map(

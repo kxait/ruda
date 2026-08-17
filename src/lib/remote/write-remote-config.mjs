@@ -1,16 +1,16 @@
 /** @import {NodeSSH} from "node-ssh" */
 
 import { stringify } from 'yaml';
-import { remoteConfigGen2Schema } from './remote-config-gen2-schema.mjs';
+import { remoteConfigSchema } from './remote-config-schema.mjs';
 import { encodeTransport } from '../encode-transport.mjs';
 
 /**
  * @param {NodeSSH} sshConnection
  * @param {string} envPath
- * @param {remoteConfigGen2Schema} config
+ * @param {remoteConfigSchema} config
  * @returns
  */
-export async function writeRemoteConfigGen2(sshConnection, envPath, config) {
+export async function writeRemoteConfig(sshConnection, envPath, config) {
   const configPath = `${envPath}/config.yml`;
 
   const configSerialized = stringify(config);

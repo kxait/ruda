@@ -1,24 +1,28 @@
+/** @import {NodeSSH} from "node-ssh" */
+
+import { remoteConfigSchema } from '../remote/remote-config-schema.mjs';
 import { sshWithGuardrail } from '../ssh/ssh-with-guardrail.mjs';
 import { getSshCommand } from './get-ssh-command.mjs';
-/**
- * @import {NodeSSH} from "node-ssh"
- * @import {RudaYmlResultEnv} from "../config.mjs"
- * @import {remoteConfigSchema} from "../remote/remote-config-schema.mjs"
- */
+
+/** @typedef {{ hasIdRsa: boolean; targetRef?: string }} CloneOptions */
 
 /**
  * @param {NodeSSH} sshConnection
- * @param {RudaYmlResultEnv} env
- * @param {remoteConfigSchema} remoteConfig
  * @param {string} envPath
+ * @param {remoteConfigSchema} remoteConfig
+ * @param {CloneOptions} options
  */
-export async function cloneRepo(sshConnection, env, remoteConfig, envPath) {
-  const gitSshCommand = getSshCommand(remoteConfig);
+export async function cloneRepo(sshConnection, envPath, remoteConfig, options) {
+  const gitSshCommand = getSshCommand(envPath, options.hasIdRsa);
   const repoPath = `${envPath}/repo`;
-  await sshWithGuardrail(
-    sshConnection,
-    envPath,
-    `GIT_SSH_COMMAND="${gitSshCommand}" git clone ${env.repo_url} ${repoPath}`,
-    'repo clone',
-  );
+
+  let gitCommand = `GIT_SSH_COMMAND="${gitSshCommand}" git clone ${remoteConfig.remoteUrl}`;
+
+  if (options.targetRef) {
+    gitCommand += ` --branch ${options.targetRef}`;
+  }
+
+  gitCommand += ` ${repoPath}`;
+
+  await sshWithGuardrail(sshConnection, envPath, gitCommand, 'repo clone');
 }

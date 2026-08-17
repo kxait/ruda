@@ -2,8 +2,8 @@
 
 import chalk from 'chalk';
 import { commandNames } from './command-names.mjs';
-import { elegantExit } from '../../lib/elegant-exit.mjs';
-import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
+import { elegantExit } from '../lib/elegant-exit.mjs';
+import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function removeEnv() {
@@ -29,5 +29,5 @@ export async function removeEnv() {
 
   await sshConnection.exec('sh', ['-c', `rm -rf ${envPath}`]);
 
-  console.log(chalk.blue(commandNames.envRemove), `done`);
+  console.log(chalk.blue(commandNames.remove), `done`);
 }

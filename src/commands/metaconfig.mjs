@@ -1,4 +1,4 @@
-import { getMetaconfig } from '../../lib/meta/get-metaconfig.mjs';
+import { getMetaconfig } from '../lib/meta/get-metaconfig.mjs';
 
 export async function metaconfig() {
   const { metaconfigYmlText } = await getMetaconfig();

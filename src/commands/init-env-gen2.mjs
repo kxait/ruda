@@ -3,12 +3,12 @@
 import chalk from 'chalk';
 import { commandNames } from './command-names.mjs';
 import { readFile } from 'node:fs/promises';
-import { remoteConfigGen2Schema } from '../../lib/remote/remote-config-gen2-schema.mjs';
+import { remoteConfigSchema } from '../lib/remote/remote-config-schema.mjs';
 import { stringify } from 'yaml';
-import { encodeTransport } from '../../lib/encode-transport.mjs';
-import { remoteGenerateEd25519 } from '../../lib/remote/remote-generate-ed25519.mjs';
-import { elegantExit } from '../../lib/elegant-exit.mjs';
-import { getCommandContext } from '../../lib/get-command-context.mjs';
+import { encodeTransport } from '../lib/encode-transport.mjs';
+import { remoteGenerateEd25519 } from '../lib/remote/remote-generate-ed25519.mjs';
+import { elegantExit } from '../lib/elegant-exit.mjs';
+import { getCommandContext } from '../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function initEnvGen2() {
@@ -30,7 +30,7 @@ export async function initEnvGen2() {
 
   if (!idRsaPath && !generateRemoteIdRsa) {
     console.log(
-      chalk.yellow(commandNames.envInit),
+      chalk.yellow(commandNames.init),
       `warn: no identity file provided or generated, assuming public access to repo`,
     );
   }
@@ -64,7 +64,7 @@ export async function initEnvGen2() {
 
   await sshConnection.exec('sh', ['-c', `mkdir -p ${envPath}`]);
 
-  const remoteConfig = remoteConfigGen2Schema.parse({
+  const remoteConfig = remoteConfigSchema.parse({
     version: '2',
     env: {},
     files: {},
@@ -92,9 +92,9 @@ export async function initEnvGen2() {
 
   if (generateRemoteIdRsa) {
     const pubkey = await remoteGenerateEd25519(sshConnection, envPath);
-    console.log(chalk.blue(commandNames.envInit), `generated public key`);
+    console.log(chalk.blue(commandNames.init), `generated public key`);
     console.log(pubkey);
   }
 
-  console.log(chalk.blue(commandNames.envInit), `done at ${envPath}`);
+  console.log(chalk.blue(commandNames.init), `done at ${envPath}`);
 }
