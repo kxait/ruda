@@ -3,15 +3,12 @@
 import chalk from 'chalk';
 import { commandNames } from './command-names.mjs';
 import { readFile } from 'node:fs/promises';
-import { ok } from 'node:assert';
-import { getDefaultSshConnectionPool } from '../lib/ssh/ssh-connection-pool.mjs';
-import { getRemoteValidRudaDirPath } from '../lib/remote/get-remote-valid-ruda-dir-path.mjs';
-import { remoteConfigGen2Schema } from '../lib/remote/remote-config-gen2-schema.mjs';
+import { remoteConfigGen2Schema } from '../../lib/remote/remote-config-gen2-schema.mjs';
 import { stringify } from 'yaml';
-import { encodeTransport } from '../lib/encode-transport.mjs';
-import { remoteGenerateEd25519 } from '../lib/remote/remote-generate-ed25519.mjs';
-import { elegantExit } from '../lib/elegant-exit.mjs';
-import { getCommandContext } from '../lib/get-command-context.mjs';
+import { encodeTransport } from '../../lib/encode-transport.mjs';
+import { remoteGenerateEd25519 } from '../../lib/remote/remote-generate-ed25519.mjs';
+import { elegantExit } from '../../lib/elegant-exit.mjs';
+import { getCommandContext } from '../../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function initEnvGen2() {

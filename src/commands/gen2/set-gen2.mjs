@@ -1,9 +1,9 @@
 /** @import {Command} from "commander" */
 
-import { writeRemoteConfigGen2 } from '../lib/remote/write-remote-config-gen2.mjs';
+import { writeRemoteConfigGen2 } from '../../lib/remote/write-remote-config-gen2.mjs';
 import { commandNames } from './command-names.mjs';
 import chalk from 'chalk';
-import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
+import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function setGen2() {

@@ -1,8 +1,8 @@
 /** @import {Command} from "commander" */
 
-import { getRepoRef } from '../lib/build-tools-gen2/get-repo-ref.mjs';
-import { sshWithGuardrail } from '../lib/ssh/ssh-with-guardrail.mjs';
-import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
+import { getRepoRef } from '../../lib/build-tools-gen2/get-repo-ref.mjs';
+import { sshWithGuardrail } from '../../lib/ssh/ssh-with-guardrail.mjs';
+import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function runGen2() {

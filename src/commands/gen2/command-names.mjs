@@ -11,4 +11,5 @@ export const commandNames = {
   setFile2: 'set-file2',
   sync: 'sync',
   run2: 'run2',
+  migrate: 'migrate',
 };

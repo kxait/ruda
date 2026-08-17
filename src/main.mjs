@@ -7,22 +7,22 @@ import { uploadCert } from './commands/upload-cert.mjs';
 import { set } from './commands/set.mjs';
 import { run } from './commands/run.mjs';
 import { vars } from './commands/vars.mjs';
-import { metaconfig } from './commands/metaconfig.mjs';
-import { commandNames } from './commands/command-names.mjs';
-import { initMetaconfig } from './commands/init-metaconfig.mjs';
-import { setMetaconfig } from './commands/set-metaconfig.mjs';
+import { commandNames } from './commands/gen2/command-names.mjs';
 import { defaultMetaconfigPath } from './lib/meta/default-metaconfig-path.mjs';
-import { listEnvs } from './commands/list-envs.mjs';
-import { getDefaultSshConnectionPool } from './lib/ssh/ssh-connection-pool.mjs';
-import { initEnvGen2 } from './commands/init-env-gen2.mjs';
-import { removeEnv } from './commands/remove-env.mjs';
-import { envPubkey } from './commands/env-pubkey.mjs';
-import { setGen2 } from './commands/set-gen2.mjs';
-import { describeEnv } from './commands/describe-env.mjs';
-import { setFileGen2 } from './commands/set-file-gen2.mjs';
-import { sync } from './commands/sync.mjs';
-import { runGen2 } from './commands/run-gen2.mjs';
+import { setGen2 } from './commands/gen2/set-gen2.mjs';
+import { describeEnv } from './commands/gen2/describe-env.mjs';
+import { setFileGen2 } from './commands/gen2/set-file-gen2.mjs';
+import { sync } from './commands/gen2/sync.mjs';
+import { runGen2 } from './commands/gen2/run-gen2.mjs';
 import { elegantExit } from './lib/elegant-exit.mjs';
+import { envPubkey } from './commands/gen2/env-pubkey.mjs';
+import { initEnvGen2 } from './commands/gen2/init-env-gen2.mjs';
+import { initMetaconfig } from './commands/gen2/init-metaconfig.mjs';
+import { listEnvs } from './commands/gen2/list-envs.mjs';
+import { metaconfig } from './commands/gen2/metaconfig.mjs';
+import { removeEnv } from './commands/gen2/remove-env.mjs';
+import { setMetaconfig } from './commands/gen2/set-metaconfig.mjs';
+import { migrate } from './commands/gen2/migrate.mjs';
 
 /** Gen1 */
 program.description('remote deployment tool');
@@ -158,6 +158,8 @@ program
   .argument('<command-text...>')
   .action(runGen2)
   .description('run a command in the remote environment');
+
+program.command(commandNames.migrate).argument('env-name').action(migrate);
 
 program.hook('postAction', async () => {
   await elegantExit(0);

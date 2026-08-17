@@ -1,8 +1,8 @@
 /** @import {Command} from "commander" */
 
 import chalk from 'chalk';
-import { elegantExit } from '../lib/elegant-exit.mjs';
-import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
+import { elegantExit } from '../../lib/elegant-exit.mjs';
+import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function envPubkey() {

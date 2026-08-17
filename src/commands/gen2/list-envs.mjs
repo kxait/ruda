@@ -1,8 +1,8 @@
 /** @import {Command} from "commander" */
 
 import { ok } from 'node:assert';
-import { getRemoteValidRudaDirPath } from '../lib/remote/get-remote-valid-ruda-dir-path.mjs';
-import { getDefaultSshConnectionPool } from '../lib/ssh/ssh-connection-pool.mjs';
+import { getRemoteValidRudaDirPath } from '../../lib/remote/get-remote-valid-ruda-dir-path.mjs';
+import { getDefaultSshConnectionPool } from '../../lib/ssh/ssh-connection-pool.mjs';
 
 /** @this {Command} */
 export async function listEnvs() {

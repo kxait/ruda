@@ -1,9 +1,9 @@
 /** @import {Command} from "commander" */
 
-import { syncRepo } from '../lib/build-tools-gen2/sync-repo.mjs';
+import { syncRepo } from '../../lib/build-tools-gen2/sync-repo.mjs';
 import { commandNames } from './command-names.mjs';
 import chalk from 'chalk';
-import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
+import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
 
 /** @this {Command} */
 export async function sync() {

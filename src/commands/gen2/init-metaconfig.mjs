@@ -1,10 +1,9 @@
 import { stat, writeFile } from 'node:fs/promises';
-import { defaultMetaconfigPath } from '../lib/meta/default-metaconfig-path.mjs';
+import { defaultMetaconfigPath } from '../../lib/meta/default-metaconfig-path.mjs';
 import chalk from 'chalk';
 import { stringify } from 'yaml';
-import { commandNames } from './command-names.mjs';
-import { defaultMetaconfigData } from '../lib/meta/default-metaconfig-data.mjs';
-import { elegantExit } from '../lib/elegant-exit.mjs';
+import { defaultMetaconfigData } from '../../lib/meta/default-metaconfig-data.mjs';
+import { elegantExit } from '../../lib/elegant-exit.mjs';
 /** @import {Command} from "commander" */
 
 /** @this {Command} */

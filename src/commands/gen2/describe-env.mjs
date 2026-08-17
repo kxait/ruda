@@ -1,7 +1,7 @@
 /** @import {Command} from "commander" */
 
 import chalk from 'chalk';
-import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
+import { getCommandContextWithEnv } from '../../lib/get-command-context.mjs';
 import { commandNames } from './command-names.mjs';
 
 /** @this {Command} */

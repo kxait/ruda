@@ -6,7 +6,7 @@ import z from 'zod';
 
 import chalk from 'chalk';
 
-const rudaYmlEnvironmentSchema = z.object({
+export const rudaYmlEnvironmentSchema = z.object({
   repo_url: z.string(),
   ssh_host: z.string(),
   ssh_user: z.string(),
@@ -16,7 +16,7 @@ const rudaYmlEnvironmentSchema = z.object({
   files: z.array(z.string()).optional(),
 });
 
-const rudaYmlSchema = z.object({
+export const rudaYmlSchema = z.object({
   envs: z
     .record(z.string(), rudaYmlEnvironmentSchema)
     .refine(
