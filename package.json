@@ -6,6 +6,12 @@
   "bin": {
     "ruda": "src/main.mjs"
   },
+  "scripts": {
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "format": "prettier --write src test test-support",
+    "format:check": "prettier --check src test test-support"
+  },
   "devDependencies": {
     "@types/node": "^25.3.0",
     "prettier": "^3.8.1",
