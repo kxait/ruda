@@ -23,6 +23,11 @@ environments over SSH. There is no build step; source runs directly. Entrypoint 
 - Real end-to-end verification requires a reachable SSH host configured in
   `~/.ruda-meta.yml`.
 
+## Git
+
+- Every commit message must start with `[auto]`, for example
+  `[auto] add sync tests`.
+
 ## Architecture
 
 - `src/commands/*.mjs` holds one Commander handler per command. Command names are
@@ -44,6 +49,9 @@ environments over SSH. There is no build step; source runs directly. Entrypoint 
   build git commands with `getSshCommand` so the environment's `id_rsa` is used.
 - Write remote config/files through `encodeTransport` (base64), as existing code
   does, to avoid shell quoting issues.
+- `src/lib/debug.mjs` holds the process-wide debug flag. `-v/--verbose` sets it
+  before any command action; use `isDebug()` (also available as
+  `globalThis.isDebug()`) instead of threading a flag through call signatures.
 
 ## Behavior gotchas
 

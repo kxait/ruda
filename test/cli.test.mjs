@@ -33,9 +33,20 @@ test('CLI help lists every registered command', async (t) => {
   const output = `${result.stdout}${result.stderr}`;
 
   assert.equal(result.status, 0);
+  assert.match(output, /-v, --verbose/);
   for (const command of Object.values(commandNames)) {
     assert.match(output, new RegExp(`\\b${command}\\b`));
   }
+});
+
+test('CLI accepts -v/--verbose before or after a subcommand', async (t) => {
+  const home = await createTempHome(t);
+
+  const init = runCli(['-v', 'meta-init'], home);
+  assert.equal(init.status, 0);
+
+  const get = runCli(['meta-get', '--verbose'], home);
+  assert.equal(get.status, 0);
 });
 
 test('meta config commands work against the HOME-scoped config file', async (t) => {

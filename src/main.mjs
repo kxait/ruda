@@ -2,6 +2,7 @@
 import { program } from 'commander';
 import { defaultMetaconfigPath } from './lib/meta/default-metaconfig-path.mjs';
 import { elegantExit } from './lib/elegant-exit.mjs';
+import { setDebug } from './lib/debug.mjs';
 import { commandNames } from './commands/command-names.mjs';
 import { metaconfig } from './commands/metaconfig.mjs';
 import { describeEnv } from './commands/describe-env.mjs';
@@ -16,7 +17,9 @@ import { setVariable } from './commands/set-variable.mjs';
 import { setMetaconfig } from './commands/set-metaconfig.mjs';
 import { sync } from './commands/sync.mjs';
 
-program.description('remote deployment tool');
+program
+  .description('remote deployment tool')
+  .option('-v, --verbose', 'enable project-wide debug mode');
 
 program
   .command(commandNames.metaGet)
@@ -107,6 +110,10 @@ program
   .argument('<command-text...>')
   .action(runCommand)
   .description('run a command in the remote environment');
+
+program.hook('preAction', () => {
+  setDebug(Boolean(program.opts().verbose));
+});
 
 program.hook('postAction', async () => {
   await elegantExit(0);
