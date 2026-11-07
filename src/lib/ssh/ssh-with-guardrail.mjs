@@ -1,6 +1,7 @@
 /** @import {NodeSSH} from "node-ssh" */
 
 import chalk from 'chalk';
+import { isDebug } from '../debug.mjs';
 import { elegantExit } from '../elegant-exit.mjs';
 
 /**
@@ -10,6 +11,10 @@ import { elegantExit } from '../elegant-exit.mjs';
  * @param {string} opName
  */
 export async function sshWithGuardrail(sshConnection, cwd, command, opName) {
+  if (isDebug()) {
+    console.log(chalk.gray(`[debug] ${cwd}$ ${command}`));
+  }
+
   const result = await sshConnection.exec('sh', ['-c', command], {
     cwd,
     stream: 'both',

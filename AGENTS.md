@@ -52,6 +52,7 @@ environments over SSH. There is no build step; source runs directly. Entrypoint 
 - `src/lib/debug.mjs` holds the process-wide debug flag. `-v/--verbose` sets it
   before any command action; use `isDebug()` (also available as
   `globalThis.isDebug()`) instead of threading a flag through call signatures.
+  `sshWithGuardrail` debug-prints the full remote command and cwd before running.
 
 ## Behavior gotchas
 
