@@ -9,6 +9,12 @@ simple remote task runner
 
 ## getting started
 
+install this tool to npm globall - it will run the script from anywhere
+
+```bash
+$ npm link
+```
+
 init the meta config file: this sits in your home directory and contains the remote login credentials
 
 ```bash

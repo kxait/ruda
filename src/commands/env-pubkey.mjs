@@ -8,10 +8,9 @@ import { getCommandContextWithEnv } from '../lib/get-command-context.mjs';
 export async function envPubkey() {
   const name = this.args[0];
 
-  const { sshConnection, remoteConfig, envPath, hasIdRsa } =
-    await getCommandContextWithEnv({
-      envName: name,
-    });
+  const { sshConnection, envPath, hasIdRsa } = await getCommandContextWithEnv({
+    envName: name,
+  });
 
   if (!hasIdRsa) {
     console.error(chalk.red(`error: env ${name} does not have identity file`));

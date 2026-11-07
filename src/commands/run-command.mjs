@@ -18,7 +18,11 @@ export async function runCommand() {
   const envVars = {
     ...remoteConfig.env,
     ENV: name,
+    // legacy
+    RUDA_ENV_NAME: name,
     REF: ref,
+    // legacy
+    VERSION: ref,
   };
 
   const envVarText = Object.entries(envVars)
